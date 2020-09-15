@@ -2,19 +2,11 @@ package TaxiCall;
 
 public class OrderDeclined extends AbstractEvent {
 
-    private Long id;
     private Long driverId;
     private String status;
     private String location;
     private Long orderId;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
     public Long getDriverId() {
         return driverId;
     }

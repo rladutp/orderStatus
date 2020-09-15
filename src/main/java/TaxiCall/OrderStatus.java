@@ -8,8 +8,7 @@ import java.util.List;
 public class OrderStatus {
 
         @Id
-        @GeneratedValue(strategy=GenerationType.AUTO)
-        private Long id;
+        //@GeneratedValue(strategy=GenerationType.AUTO)
         private Long orderId;
         private Long driverId;
         private String location;
@@ -17,13 +16,6 @@ public class OrderStatus {
         private String customerName;
 
 
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
         public Long getOrderId() {
             return orderId;
         }

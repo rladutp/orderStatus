@@ -2,19 +2,12 @@ package TaxiCall;
 
 public class OrderCanceled extends AbstractEvent {
 
-    private Long id;
     private Long orderId;
     private Long driverId;
     private String location;
     private String customerName;
+    private String status;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
     public Long getOrderId() {
         return orderId;
     }
@@ -42,5 +35,13 @@ public class OrderCanceled extends AbstractEvent {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

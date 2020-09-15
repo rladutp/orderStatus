@@ -24,8 +24,11 @@ public class OrderStatusViewHandler {
                 // view 객체 생성
                 OrderStatus orderStatus = new OrderStatus();
                 // view 객체에 이벤트의 Value 를 set 함
-                orderStatus.setId(ordered.getId());
                 orderStatus.setOrderId(ordered.getOrderId());
+                orderStatus.setDriverId(ordered.getDriverId());
+                orderStatus.setLocation(ordered.getLocation());
+                orderStatus.setCustomerName(ordered.getCustomerName());
+                orderStatus.setStatus(ordered.getStatus());
                 // view 레파지 토리에 save
                 orderStatusRepository.save(orderStatus);
             }
@@ -36,14 +39,15 @@ public class OrderStatusViewHandler {
     @StreamListener(KafkaProcessor.INPUT)
     public void whenOrderCanceled_then_CREATE_2 (@Payload OrderCanceled orderCanceled) {
         try {
-            if (orderCanceled.isMe()) {
+            if(orderCanceled.isMe()){
+                System.out.println("##### listener RequestCancelOrder : " + orderCanceled.toJson());
                 // view 객체 생성
-                OrderStatus orderStatus = new OrderStatus();
-                // view 객체에 이벤트의 Value 를 set 함
-                orderStatus.setId(orderCanceled.getId());
-                orderStatus.setOrderId(orderCanceled.getOrderId());
-                // view 레파지 토리에 save
-                orderStatusRepository.save(orderStatus);
+
+                orderStatusRepository.findById(Long.valueOf(orderCanceled.getOrderId())).ifPresent((orderStatus)->{
+                    orderStatus.setDriverId(orderCanceled.getDriverId());
+                    orderStatus.setStatus("OrderCanceled");
+                    orderStatusRepository.save(orderStatus);
+                });
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -57,7 +61,7 @@ public class OrderStatusViewHandler {
             if (orderAgreed.isMe()) {
                 // view 객체 조회
                 List<OrderStatus> orderStatusList = orderStatusRepository.findByOrderId(orderAgreed.getOrderId());
-                for(OrderStatus orderStatus : orderStatusList){
+                for(OrderStatus  orderStatus: orderStatusList){
                     // view 객체에 이벤트의 eventDirectValue 를 set 함
                     orderStatus.setStatus(orderAgreed.getStatus());
                     orderStatus.setOrderId(orderAgreed.getOrderId());
@@ -96,7 +100,7 @@ public class OrderStatusViewHandler {
                 for(OrderStatus orderStatus : orderStatusList){
                     // view 객체에 이벤트의 eventDirectValue 를 set 함
                     orderStatus.setOrderId(orderCanceled.getOrderId());
-                    orderStatus.setCustomerName(orderCanceled.getCustomerName());
+                    orderStatus.setStatus(orderCanceled.getStatus());
                     // view 레파지 토리에 save
                     orderStatusRepository.save(orderStatus);
                 }

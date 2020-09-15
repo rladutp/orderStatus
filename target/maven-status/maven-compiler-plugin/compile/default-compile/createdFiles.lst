@@ -8,5 +8,4 @@ TaxiCall\OrderStatusApplication.class
 TaxiCall\PolicyHandler.class
 TaxiCall\OrderStatus.class
 TaxiCall\Ordered.class
-TaxiCall\OrderStatusViewHandler.class
 TaxiCall\OrderCanceled.class
